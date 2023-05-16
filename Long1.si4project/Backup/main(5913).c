@@ -77,10 +77,10 @@ void DevSleep(void)
 	delay_ms(500);
 	BLUE_WORK_MODE();
 	BLUE_SLEEP();
-	TR0 = 0;
+	T3R = 0;
 	sysSleep();
 	SensorMeasureBegin();//开始测量 
-	TR0 = 1;
+	T3R = 1;
 	SENSOR_POWER_ON();
 }
 
@@ -166,9 +166,9 @@ void IoInit()
     EAXFR = 1;
     WTST = 0;                       //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
 
-    P0M1 = 0x50;   P0M0 = 0x00;     //设置为准双向口
+    P0M1 = 0x00;   P0M0 = 0x00;     //设置为准双向口
     P1M1 = 0x00;   P1M0 = 0x00;     //设置为准双向口
-    P2M1 = 0x00;   P2M0 = 0x00;     //设置为准双向口
+    P2M1 = 0x02;   P2M0 = 0x00;     //设置为准双向口
     P3M1 = 0x00;   P3M0 = 0x00;     //P3.3设置为推挽输出
     P4M1 = 0x00;   P4M0 = 0x00;     //设置为准双向口
     P5M1 = 0x00;   P5M0 = 0x00;     //设置为准双向口
@@ -208,7 +208,7 @@ void TimerTask()
             Time1s = 0;
             SysRunState.isCanReadSensor = 1;
 
-            Pluse3Cnt = 100;//((u32)LowOverFlowFlag3*65536)<<8 | (u32)(T3H*256+T3L) ;
+            Pluse3Cnt = 100;//((u32)LowOverFlowFlag*65536)<<8 | (u32)(T3H*256+T3L) ;
             T3R = 0; 
             T3H = 0;
             T3L = 0;
@@ -280,7 +280,7 @@ int main(void)
     Adc_Init();
 	DevInit();
     
-	delay_ms(200);
+	delay_ms(2000);
         
 	Uart1_Init();
     Uart3_Init();
@@ -291,7 +291,6 @@ int main(void)
 	Timer3_Init();
 	Timer4_Init();
     
-    delay_ms(1000);
 	GetPara(&SysRunState.stParam);
     
 	EA = 1;

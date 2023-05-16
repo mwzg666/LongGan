@@ -18,11 +18,11 @@
 
 
 //===============================变量声明=============================
+extern BYTE ThresAddr[];
 
 
 //===============================函数声明=============================
-void MCP4725_OutVol(BYTE addr,unsigned int voltage);
-
+void MCP4725_OutVol(BYTE addr,WORD voltage);
 
 
 #if 0

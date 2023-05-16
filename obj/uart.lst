@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  uart                                                               16/05/23  11:31:21  PAGE 1   
+C251 COMPILER V5.60.0,  uart                                                               16/05/23  14:35:12  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE uart
@@ -66,7 +66,7 @@ stmt  level    source
    54   1          Rx1_Timer  = 0;
    55   1          RX1_Cnt = 0;
    56   1      }
-C251 COMPILER V5.60.0,  uart                                                               16/05/23  11:31:21  PAGE 2   
+C251 COMPILER V5.60.0,  uart                                                               16/05/23  14:35:12  PAGE 2   
 
    57          
    58          
@@ -134,7 +134,7 @@ stmt  level    source
   120   1          //UART1 switch to, 0x00: P3.0 P3.1, 0x40: P3.6 P3.7, 
   121   1          //                 0x80: P1.6 P1.7, 0xC0: P4.3 P4.4
   122   1      
-C251 COMPILER V5.60.0,  uart                                                               16/05/23  11:31:21  PAGE 3   
+C251 COMPILER V5.60.0,  uart                                                               16/05/23  14:35:12  PAGE 3   
 
   123   1          S3_S = 0x00;
   124   1          
@@ -202,7 +202,7 @@ stmt  level    source
   186   1          memset(RX3_Buffer,0,MAX_LENGTH);
   187   1          RX3_Cnt = 0;
   188   1      }
-C251 COMPILER V5.60.0,  uart                                                               16/05/23  11:31:21  PAGE 4   
+C251 COMPILER V5.60.0,  uart                                                               16/05/23  14:35:12  PAGE 4   
 
   189          
   190          void ClearBleBuf()

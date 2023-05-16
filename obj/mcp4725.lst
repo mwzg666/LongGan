@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  mcp4725                                                            16/05/23  11:31:21  PAGE 1   
+C251 COMPILER V5.60.0,  mcp4725                                                            16/05/23  14:35:12  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE mcp4725
@@ -25,19 +25,19 @@ stmt  level    source
    13          // ÆäËû±¸×¢: 
    14          //========================================================================
    15          
-   16          
-   17          void MCP4725_OutVol(BYTE addr,WORD voltage)
-   18          {
-   19   1              DWORD uiVolTemp;
+   16          void MCP4725_OutVol(BYTE addr,unsigned int voltage)
+   17          {
+   18   1              DWORD uiVolTemp;
+   19   1          unsigned int vol_tmp;
    20   1              BYTE out_data = 0;
-   21   1              if(voltage > MCP4725_REF_VOL)
-   22   1              {
-   23   2                      //printf("input voltage > ref voltage\r\n");
-   24   2                      return;
-   25   2              }
-   26   1      
-   27   1          uiVolTemp = voltage;
-   28   1      
+   21   1              vol_tmp = voltage;
+   22   1              if(vol_tmp >= MCP4725_REF_VOL)
+   23   1              {
+   24   2                      //printf("input voltage > ref voltage\r\n");
+   25   2                      return;
+   26   2              }
+   27   1      
+   28   1          uiVolTemp = vol_tmp;
    29   1              uiVolTemp = uiVolTemp*4096l/MCP4725_REF_VOL;
    30   1              I2C_Start(1);
    31   1              out_data = addr<<1;
@@ -66,7 +66,7 @@ stmt  level    source
                        dat = ((uiTemp1&0xf)<<4 |(uiTemp2>>4) ) | (uiTemp1<<4); 
                        return dat;
                }
-C251 COMPILER V5.60.0,  mcp4725                                                            16/05/23  11:31:21  PAGE 2   
+C251 COMPILER V5.60.0,  mcp4725                                                            16/05/23  14:35:12  PAGE 2   
 
                #endif
    58          
@@ -74,14 +74,14 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       839     ------
+  code size            =       847     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
-  edata size           =        11     ------
+  edata size           =        13     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------

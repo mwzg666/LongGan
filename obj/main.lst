@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  14:35:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -41,32 +41,32 @@ stmt  level    source
    29          // 其他备注: 
    30          //========================================================================
    31          
-   32          void InitParam(LP_PARAM *param)
+   32          void InitParam()
    33          {
-   34   1              memset((void*)param,0,sizeof(LP_PARAM));
-   35   1              param->SensorType = SENSOR_LONGPOLE;//探头类型
-   36   1              param->s_SysParam.Hv = 800;      //高压值
-   37   1              param->s_SysParam.Z1 = 2500-600;//甄别器阈值1
-   38   1              param->s_SysParam.Ct = 1000;    //计数时间
-   39   1              param->s_SysParam.Hd = 3;        //高压误差
-   40   1              param->s_SysParam.Z2 = 1100;    //甄别器阈值2
-   41   1              param->s_SysParam.Hn = 0x5a;
+   34   1              memset((void*)&SysRunState.stParam,0,sizeof(LP_PARAM));
+   35   1              SysRunState.stParam.SensorType = SENSOR_LONGPOLE;          //探头类型
+   36   1              SysRunState.stParam.s_SysParam.Hv = 800;                   //高压值
+   37   1              SysRunState.stParam.s_SysParam.Z1 = 2500-600;              //甄别器阈值1
+   38   1              SysRunState.stParam.s_SysParam.Ct = 1000;                  //计数时间
+   39   1              SysRunState.stParam.s_SysParam.Hd = 3;                     //高压误差
+   40   1              SysRunState.stParam.s_SysParam.Z2 = 1100;                  //甄别器阈值2
+   41   1              SysRunState.stParam.s_SysParam.Hn = 0x5a;
    42   1      
-   43   1              param->s_SysParam.DiYaCanshuA = 0.63;//低量程通道校准因子
-   44   1              param->s_SysParam.DiYaCanshuB = 0.00019;//低量程通道校准因子
-   45   1              param->s_SysParam.DiYaCanshuC = 0.83; //1;//低量程通道校准因子
-   46   1              param->s_SysParam.GaoYaCanshuA = 33.6;//高量程通道校准因子
-   47   1              param->s_SysParam.GaoYaCanshuB = 0.000023;//高量程通道校准因子
-   48   1              param->s_SysParam.GaoYaCanshuC = 0.83; // ;//高量程通道校准因子
+   43   1              SysRunState.stParam.s_SysParam.DiYaCanshuA = 0.63;         //低量程通道校准因子
+   44   1              SysRunState.stParam.s_SysParam.DiYaCanshuB = 0.00019;      //低量程通道校准因子
+   45   1              SysRunState.stParam.s_SysParam.DiYaCanshuC = 0.83;         //1;低量程通道校准因子
+   46   1              SysRunState.stParam.s_SysParam.GaoYaCanshuA = 33.6;        //高量程通道校准因子
+   47   1              SysRunState.stParam.s_SysParam.GaoYaCanshuB = 0.000023;    //高量程通道校准因子
+   48   1              SysRunState.stParam.s_SysParam.GaoYaCanshuC = 0.83;        //高量程通道校准因子
    49   1              
-   50   1              param->s_Alarm.DosePreAlarm = 300;//300uSv
-   51   1              param->s_Alarm.DoseAlarm = 400;//400uSv
-   52   1              param->s_Alarm.DoseRatePreAlarm = 300;//300uSv/h
-   53   1              param->s_Alarm.DoseRateAlarm = 400;//400uSv/h
+   50   1              SysRunState.stParam.s_Alarm.DosePreAlarm = 300;            //300uSv
+   51   1              SysRunState.stParam.s_Alarm.DoseAlarm = 400;               //400uSv
+   52   1              SysRunState.stParam.s_Alarm.DoseRatePreAlarm = 300;        //300uSv/h
+   53   1              SysRunState.stParam.s_Alarm.DoseRateAlarm = 400;           //400uSv/h
    54   1      
    55   1              WritePara();
    56   1      }
-C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  14:35:13  PAGE 2   
 
    57          
    58          void DevInit(void)
@@ -91,10 +91,10 @@ stmt  level    source
    77   1              delay_ms(500);
    78   1              BLUE_WORK_MODE();
    79   1              BLUE_SLEEP();
-   80   1              T3R = 0;
+   80   1              TR0 = 0;
    81   1              sysSleep();
    82   1              SensorMeasureBegin();//开始测量 
-   83   1              T3R = 1;
+   83   1              TR0 = 1;
    84   1              SENSOR_POWER_ON();
    85   1      }
    86          
@@ -134,7 +134,7 @@ stmt  level    source
   120   1      
   121   1          
   122   1          BLUE_WORK_MODE();
-C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  14:35:13  PAGE 3   
 
   123   1      }
   124          
@@ -182,9 +182,9 @@ stmt  level    source
   166   1          EAXFR = 1;
   167   1          WTST = 0;                       //设置程序指令延时参数，赋值为0可将CPU执行指令的速度设置为最快
   168   1      
-  169   1          P0M1 = 0x00;   P0M0 = 0x00;     //设置为准双向口
+  169   1          P0M1 = 0x50;   P0M0 = 0x00;     //设置为准双向口
   170   1          P1M1 = 0x00;   P1M0 = 0x00;     //设置为准双向口
-  171   1          P2M1 = 0x02;   P2M0 = 0x00;     //设置为准双向口
+  171   1          P2M1 = 0x00;   P2M0 = 0x00;     //设置为准双向口
   172   1          P3M1 = 0x00;   P3M0 = 0x00;     //P3.3设置为推挽输出
   173   1          P4M1 = 0x00;   P4M0 = 0x00;     //设置为准双向口
   174   1          P5M1 = 0x00;   P5M0 = 0x00;     //设置为准双向口
@@ -202,7 +202,7 @@ stmt  level    source
   186          // 当前作者:
   187          // 其他备注: 
   188          //========================================================================
-C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 4   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  14:35:13  PAGE 4   
 
   189          void TimerTask()
   190          {
@@ -226,7 +226,7 @@ stmt  level    source
   208   3                  Time1s = 0;
   209   3                  SysRunState.isCanReadSensor = 1;
   210   3      
-  211   3                  Pluse3Cnt = 100;//((u32)LowOverFlowFlag*65536)<<8 | (u32)(T3H*256+T3L) ;
+  211   3                  Pluse3Cnt = 100;//((u32)LowOverFlowFlag3*65536)<<8 | (u32)(T3H*256+T3L) ;
   212   3                  T3R = 0; 
   213   3                  T3H = 0;
   214   3                  T3L = 0;
@@ -270,7 +270,7 @@ stmt  level    source
   252   1          if(Rx3_Timer > 20)                  //串口超时20ms
   253   1          {
   254   2              Rx3_Timer = 0;
-C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 5   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  14:35:13  PAGE 5   
 
   255   2              DataPro(RX3_Buffer,RX3_Cnt);
   256   2              ClearRs485Buf();
@@ -300,7 +300,7 @@ stmt  level    source
   280   1          Adc_Init();
   281   1              DevInit();
   282   1          
-  283   1              delay_ms(2000);
+  283   1              delay_ms(200);
   284   1              
   285   1              Uart1_Init();
   286   1          Uart3_Init();
@@ -311,65 +311,66 @@ stmt  level    source
   291   1              Timer3_Init();
   292   1              Timer4_Init();
   293   1          
-  294   1              GetPara(&SysRunState.stParam);
-  295   1          
-  296   1              EA = 1;
-  297   1          
-  298   1              //开机先检测一次电池电量
-  299   1          DeviceGetBatVal();
-  300   1      
-  301   1          BtInit();
-  302   1          DeviceGetBatVal();
-  303   1      
-  304   1              BLUE_SLEEP();
-  305   1              DeviceGetBatAlarm(&s_Bat);//开机先检测一次电池电量
-  306   1              SensorMeasureBegin();//开始测量 
-  307   1              InitArr();
-  308   1          
-  309   1          MCP4725_OutVol(MCP4725_S1_ADDR,2500-(WORD)SysRunState.stParam.s_SysParam.Z1);
-  310   1              
-  311   1          while(1)
-  312   1          {              
-  313   2              if(SysRunState.isCanReadSensor == 1)
-  314   2              {
-  315   3                  CaptureSensorPluseCounter(); //捕获当前测量结果
-  316   3                  SensorMeasureBegin();         //开始测量 
-  317   3                  SysRunState.isCanReadSensor = 0;
-  318   3              }
-  319   2      
-  320   2              if((SysRunState.NoUartTime >= 90*100)&&(SysRunState.NoUartTime < 93*100))
-C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 6   
+  294   1          delay_ms(1000);
+  295   1              GetPara(&SysRunState.stParam);
+  296   1          
+  297   1              EA = 1;
+  298   1          
+  299   1              //开机先检测一次电池电量
+  300   1          DeviceGetBatVal();
+  301   1      
+  302   1          BtInit();
+  303   1          DeviceGetBatVal();
+  304   1      
+  305   1              BLUE_SLEEP();
+  306   1              DeviceGetBatAlarm(&s_Bat);//开机先检测一次电池电量
+  307   1              SensorMeasureBegin();//开始测量 
+  308   1              InitArr();
+  309   1          
+  310   1          MCP4725_OutVol(MCP4725_S1_ADDR,2500-(WORD)SysRunState.stParam.s_SysParam.Z1);
+  311   1              
+  312   1          while(1)
+  313   1          {              
+  314   2              if(SysRunState.isCanReadSensor == 1)
+  315   2              {
+  316   3                  CaptureSensorPluseCounter(); //捕获当前测量结果
+  317   3                  SensorMeasureBegin();         //开始测量 
+  318   3                  SysRunState.isCanReadSensor = 0;
+  319   3              }
+  320   2      
+C251 COMPILER V5.60.0,  main                                                               16/05/23  14:35:13  PAGE 6   
 
-  321   2              {
-  322   3                  //长时间无通信数据尝试复位蓝牙模块
-  323   3                  BtInit();
-  324   3                  //revFlag = 0;
-  325   3                  RX1_Cnt = 0;
-  326   3                  SensorMeasureBegin();//开始测量 
-  327   3                  SysRunState.NoUartTime = 93*100;
-  328   3              }
-  329   2      
-  330   2              Rs485Hnd();
-  331   2              TimerTask();
-  332   2              
-  333   2          }
-  334   1      }
-  335          
+  321   2              if((SysRunState.NoUartTime >= 90*100)&&(SysRunState.NoUartTime < 93*100))
+  322   2              {
+  323   3                  //长时间无通信数据尝试复位蓝牙模块
+  324   3                  BtInit();
+  325   3                  //revFlag = 0;
+  326   3                  RX1_Cnt = 0;
+  327   3                  SensorMeasureBegin();//开始测量 
+  328   3                  SysRunState.NoUartTime = 93*100;
+  329   3              }
+  330   2      
+  331   2              Rs485Hnd();
+  332   2              TimerTask();
+  333   2              
+  334   2          }
+  335   1      }
   336          
   337          
   338          
+  339          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1172     ------
+  code size            =      1002     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
-  edata size           =       240     ------
+  edata size           =       236     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------

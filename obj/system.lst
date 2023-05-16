@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  system                                                             16/05/23  11:31:21  PAGE 1   
+C251 COMPILER V5.60.0,  system                                                             16/05/23  14:35:12  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE system
@@ -66,7 +66,7 @@ stmt  level    source
    54          // 其他备注: 
    55          //========================================================================
    56          void Timer3_Init(void)
-C251 COMPILER V5.60.0,  system                                                             16/05/23  11:31:21  PAGE 2   
+C251 COMPILER V5.60.0,  system                                                             16/05/23  14:35:12  PAGE 2   
 
    57          {
    58   1          T3L = 0x00;
@@ -134,7 +134,7 @@ stmt  level    source
   120   1              Pluse3Cnt = 0;
   121   1              return Return;
   122   1      }
-C251 COMPILER V5.60.0,  system                                                             16/05/23  11:31:21  PAGE 3   
+C251 COMPILER V5.60.0,  system                                                             16/05/23  14:35:12  PAGE 3   
 
   123          
   124          void Timer0_Isr (void) interrupt 1   //Timer0中断

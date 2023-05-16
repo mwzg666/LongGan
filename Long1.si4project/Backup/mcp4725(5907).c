@@ -13,19 +13,19 @@
 // ÆäËû±¸×¢: 
 //========================================================================
 
-void MCP4725_OutVol(BYTE addr,unsigned int voltage)
+
+void MCP4725_OutVol(BYTE addr,WORD voltage)
 {
 	DWORD uiVolTemp;
-    unsigned int vol_tmp;
 	BYTE out_data = 0;
-	vol_tmp = voltage;
-	if(vol_tmp >= MCP4725_REF_VOL)
+	if(voltage > MCP4725_REF_VOL)
 	{
 		//printf("input voltage > ref voltage\r\n");
 		return;
 	}
 
-    uiVolTemp = vol_tmp;
+    uiVolTemp = voltage;
+
 	uiVolTemp = uiVolTemp*4096l/MCP4725_REF_VOL;
 	I2C_Start(1);
 	out_data = addr<<1;

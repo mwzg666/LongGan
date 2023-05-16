@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  mcp4725                                                            16/05/23  09:58:12  PAGE 1   
+C251 COMPILER V5.60.0,  mcp4725                                                            16/05/23  11:31:21  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE mcp4725
@@ -66,7 +66,7 @@ stmt  level    source
                        dat = ((uiTemp1&0xf)<<4 |(uiTemp2>>4) ) | (uiTemp1<<4); 
                        return dat;
                }
-C251 COMPILER V5.60.0,  mcp4725                                                            16/05/23  09:58:12  PAGE 2   
+C251 COMPILER V5.60.0,  mcp4725                                                            16/05/23  11:31:21  PAGE 2   
 
                #endif
    58          

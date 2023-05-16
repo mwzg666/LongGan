@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               16/05/23  09:58:13  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    54   1      
    55   1              WritePara();
    56   1      }
-C251 COMPILER V5.60.0,  main                                                               16/05/23  09:58:13  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 2   
 
    57          
    58          void DevInit(void)
@@ -134,7 +134,7 @@ stmt  level    source
   120   1      
   121   1          
   122   1          BLUE_WORK_MODE();
-C251 COMPILER V5.60.0,  main                                                               16/05/23  09:58:13  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 3   
 
   123   1      }
   124          
@@ -202,7 +202,7 @@ stmt  level    source
   186          // 当前作者:
   187          // 其他备注: 
   188          //========================================================================
-C251 COMPILER V5.60.0,  main                                                               16/05/23  09:58:13  PAGE 4   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 4   
 
   189          void TimerTask()
   190          {
@@ -270,7 +270,7 @@ stmt  level    source
   252   1          if(Rx3_Timer > 20)                  //串口超时20ms
   253   1          {
   254   2              Rx3_Timer = 0;
-C251 COMPILER V5.60.0,  main                                                               16/05/23  09:58:13  PAGE 5   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 5   
 
   255   2              DataPro(RX3_Buffer,RX3_Cnt);
   256   2              ClearRs485Buf();
@@ -338,7 +338,7 @@ stmt  level    source
   318   3              }
   319   2      
   320   2              if((SysRunState.NoUartTime >= 90*100)&&(SysRunState.NoUartTime < 93*100))
-C251 COMPILER V5.60.0,  main                                                               16/05/23  09:58:13  PAGE 6   
+C251 COMPILER V5.60.0,  main                                                               16/05/23  11:31:22  PAGE 6   
 
   321   2              {
   322   3                  //长时间无通信数据尝试复位蓝牙模块

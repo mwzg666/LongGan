@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  BatVoltage                                                         16/05/23  09:58:12  PAGE 1   
+C251 COMPILER V5.60.0,  BatVoltage                                                         16/05/23  11:31:21  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE BatVoltage
@@ -66,7 +66,7 @@ stmt  level    source
    54   1          //delay_us(1000);
    55   1          //ADC10CTL0 &= ~ADC10ON;
    56   1          //delay_us(1000);
-C251 COMPILER V5.60.0,  BatVoltage                                                         16/05/23  09:58:12  PAGE 2   
+C251 COMPILER V5.60.0,  BatVoltage                                                         16/05/23  11:31:21  PAGE 2   
 
    57   1          
    58   1          //P6SEL &= ~BIT7; 
@@ -134,7 +134,7 @@ stmt  level    source
   120   2                      bat->batPercent = oldbat;
   121   2              }
   122   1              if(bat->batPercent>100)
-C251 COMPILER V5.60.0,  BatVoltage                                                         16/05/23  09:58:12  PAGE 3   
+C251 COMPILER V5.60.0,  BatVoltage                                                         16/05/23  11:31:21  PAGE 3   
 
   123   1              {
   124   2                      bat->batPercent = 100;

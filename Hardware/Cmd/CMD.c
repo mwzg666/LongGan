@@ -289,7 +289,33 @@ void ACK_CMD_C(u8 *SensorType)
 *******************************************************************************/
 void ACK_CMD_R(void)
 {
-	SendData('R',(uint8_t*)&SysRunState.stParam.s_SysParam,sizeof(SYS_PRAM));
+    SYS_PRAM red;
+    red.Hv = FloatToSmall(SysRunState.stParam.s_SysParam.Hv);
+    red.Cr = FloatToSmall(SysRunState.stParam.s_SysParam.Cr);
+    red.Ct = FloatToSmall(SysRunState.stParam.s_SysParam.Ct);
+    red.Hd = FloatToSmall(SysRunState.stParam.s_SysParam.Hd);
+    red.Hn = WordToSmall (SysRunState.stParam.s_SysParam.Hn);
+    
+    red.PingHuaShiJian = FloatToSmall(SysRunState.stParam.s_SysParam.PingHuaShiJian);
+    
+    red.S1 = FloatToSmall(SysRunState.stParam.s_SysParam.S1);
+    red.S2 = FloatToSmall(SysRunState.stParam.s_SysParam.S2);
+    red.S3 = FloatToSmall(SysRunState.stParam.s_SysParam.S3);
+    
+    red.Z1 = FloatToSmall(SysRunState.stParam.s_SysParam.Z1);
+    red.Z2 = FloatToSmall(SysRunState.stParam.s_SysParam.Z2);
+    red.Z3 = FloatToSmall(SysRunState.stParam.s_SysParam.Z3);
+    red.Z4 = FloatToSmall(SysRunState.stParam.s_SysParam.Z4);
+    
+    red.DiYaCanshuA = FloatToSmall(SysRunState.stParam.s_SysParam.DiYaCanshuA);
+    red.DiYaCanshuB = FloatToSmall(SysRunState.stParam.s_SysParam.DiYaCanshuB);
+    red.DiYaCanshuC = FloatToSmall(SysRunState.stParam.s_SysParam.DiYaCanshuC);
+    
+    red.GaoYaCanshuA = FloatToSmall(SysRunState.stParam.s_SysParam.GaoYaCanshuA);
+    red.GaoYaCanshuB = FloatToSmall(SysRunState.stParam.s_SysParam.GaoYaCanshuB);
+    red.GaoYaCanshuC = FloatToSmall(SysRunState.stParam.s_SysParam.GaoYaCanshuC);
+   
+    SendData('R',(uint8_t*)&red,sizeof(SYS_PRAM));
 }
 
 
@@ -300,9 +326,36 @@ void ACK_CMD_R(void)
 *******************************************************************************/
 void ACK_CMD_W(unsigned char *cdata)
 {
-	memcpy((uint8_t*)&SysRunState.stParam.s_SysParam,cdata,sizeof(SYS_PRAM));
+    SYS_PRAM wcm;
+    memcpy(&wcm,cdata,sizeof(SYS_PRAM));
+        
+    SysRunState.stParam.s_SysParam.Hv = FloatToSmall(wcm.Hv);
+    SysRunState.stParam.s_SysParam.Cr = FloatToSmall(wcm.Cr);
+    SysRunState.stParam.s_SysParam.Ct = FloatToSmall(wcm.Ct);
+    SysRunState.stParam.s_SysParam.Hd = FloatToSmall(wcm.Hd);
+    SysRunState.stParam.s_SysParam.Hn = wcm.Hn;
+    
+    SysRunState.stParam.s_SysParam.S1 = FloatToSmall(wcm.S1);
+    SysRunState.stParam.s_SysParam.S2 = FloatToSmall(wcm.S2);
+    SysRunState.stParam.s_SysParam.S3 = FloatToSmall(wcm.S3);
+    
+    SysRunState.stParam.s_SysParam.Z1 = FloatToSmall(wcm.Z1);
+    SysRunState.stParam.s_SysParam.Z2 = FloatToSmall(wcm.Z2);
+    SysRunState.stParam.s_SysParam.Z3 = FloatToSmall(wcm.Z3);
+    SysRunState.stParam.s_SysParam.Z4 = FloatToSmall(wcm.Z4);
+    
+    SysRunState.stParam.s_SysParam.PingHuaShiJian = FloatToSmall(wcm.PingHuaShiJian);
+
+    SysRunState.stParam.s_SysParam.DiYaCanshuA = FloatToSmall(wcm.DiYaCanshuA);
+    SysRunState.stParam.s_SysParam.DiYaCanshuB = FloatToSmall(wcm.DiYaCanshuB);
+    SysRunState.stParam.s_SysParam.DiYaCanshuC = FloatToSmall(wcm.DiYaCanshuC);
+
+    SysRunState.stParam.s_SysParam.GaoYaCanshuA = FloatToSmall(wcm.GaoYaCanshuA);
+    SysRunState.stParam.s_SysParam.GaoYaCanshuB = FloatToSmall(wcm.GaoYaCanshuB);
+    SysRunState.stParam.s_SysParam.GaoYaCanshuC = FloatToSmall(wcm.GaoYaCanshuC);
+
 	SendData('W',NULL,0);
-	//SaveParam(&SysRunState.stParam);
+	SaveParam();
 }
 
 
@@ -327,10 +380,21 @@ void ACK_CMD_S(void)
 输入：unsigned char SensorType:传感器类型
 输出：无
 *******************************************************************************/
-STU_DOSERATE gs_Dose;
+
 void ACK_CMD_V(void)
-{
-	memcpy((void*)&gs_Dose,(void*)&SysRunState.s_DoseMSG,sizeof(STU_DOSERATE));
+{ 
+    STU_DOSERATE gs_Dose;
+    gs_Dose.C1 = FloatToSmall(SysRunState.s_DoseMSG.C1);
+    gs_Dose.C2 = FloatToSmall(SysRunState.s_DoseMSG.C2);
+    
+    gs_Dose.Dose = FloatToSmall(SysRunState.s_DoseMSG.Dose);
+    gs_Dose.DoseRate = FloatToSmall(SysRunState.s_DoseMSG.DoseRate);
+    gs_Dose.DRSt = SysRunState.s_DoseMSG.DRSt;
+    gs_Dose.MaxDoseRate = FloatToSmall(SysRunState.s_DoseMSG.MaxDoseRate);
+    
+    gs_Dose.P1 = FloatToSmall(SysRunState.s_DoseMSG.P1);
+    gs_Dose.P2 = FloatToSmall(SysRunState.s_DoseMSG.P2);
+    
 	SendData('V',(uint8_t*)&gs_Dose,sizeof(STU_DOSERATE));
 }
 
@@ -342,9 +406,15 @@ void ACK_CMD_V(void)
 *******************************************************************************/
 void ACK_CMD_B(u8 *cdata)
 {
-	memcpy((uint8_t*)&SysRunState.stParam.s_Alarm,cdata,sizeof(SYS_ALARM));
+    SYS_ALARM wal;   
+    memcpy(&wal,cdata,sizeof(SYS_ALARM));
+    SysRunState.stParam.s_Alarm.DoseAlarm = FloatToSmall(wal.DoseAlarm);
+    SysRunState.stParam.s_Alarm.DosePreAlarm = FloatToSmall(wal.DosePreAlarm);
+    SysRunState.stParam.s_Alarm.DoseRateAlarm = FloatToSmall(wal.DoseRateAlarm);
+    SysRunState.stParam.s_Alarm.DoseRatePreAlarm = FloatToSmall(wal.DoseRatePreAlarm);
+    
 	SendData('B',NULL,0);
-	//SaveParam(&SysRunState.stParam);
+	SaveParam();
 } 
 
 
@@ -355,7 +425,13 @@ void ACK_CMD_B(u8 *cdata)
 *******************************************************************************/
 void ACK_CMD_F(void)
 {
-	SendData('F',(uint8_t*)&SysRunState.stParam.s_Alarm,sizeof(SYS_ALARM));
+    SYS_ALARM ral;
+    ral.DoseAlarm = FloatToSmall(SysRunState.stParam.s_Alarm.DoseAlarm);
+    ral.DosePreAlarm = FloatToSmall(SysRunState.stParam.s_Alarm.DosePreAlarm);
+    ral.DoseRateAlarm = FloatToSmall(SysRunState.stParam.s_Alarm.DoseRateAlarm);
+    ral.DoseRatePreAlarm = FloatToSmall(SysRunState.stParam.s_Alarm.DoseRatePreAlarm);
+
+	SendData('F',(uint8_t*)&ral,sizeof(SYS_ALARM));
 } 
 
 /*******************************************************************************
@@ -443,9 +519,15 @@ void ACK_CMD_SensorONOFF(uint16_t state)
 STU_BATTERY s_Bat={0};
 void ACK_CMD_Bat(void)
 {
+    STU_BATTERY bat;
+    
 	DeviceGetBatAlarm(&s_Bat);
-	
-	SendData(5,(uint8_t*)&s_Bat,sizeof(STU_BATTERY));
+    
+	bat.Voltage = WordToSmall(s_Bat.Voltage);
+    bat.Status = s_Bat.Status;
+    bat.batPercent = s_Bat.batPercent; 
+    
+	SendData(5,(uint8_t*)&bat,sizeof(STU_BATTERY));
 }
 
 /*******************************************************************************

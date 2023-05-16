@@ -1,0 +1,401 @@
+C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  09:58:12  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE DoseRate
+OBJECT MODULE PLACED IN .\obj\DoseRate.obj
+COMPILER INVOKED BY: D:\KeilMDK\C251\BIN\C251.EXE Hardware\DoseRate\DoseRate.c XSMALL INTR2 OPTIMIZE(0,SPEED) BROWSE INC
+                    -DIR(.\User;.\Hardware\CalcDoseRate;.\Hardware\Cmd;.\Hardware\Flash;.\Hardware\IIC;.\Hardware\Mcp4725;.\Hardware\Sensor;.
+                    -\Hardware\System;.\Hardware\Uart;.\User;.\Hardware\BatVoltage;.\Hardware\DoseRate;.\Hardware\CalcCps;.\Hardware\CRC;.\Ha
+                    -rdware\Queue) PRINT(.\obj\DoseRate.lst) OBJECT(.\obj\DoseRate.obj) 
+
+stmt  level    source
+
+    1          #include <main.h>
+    2          #include <math.h>
+    3          #include "DoseRate.h"
+    4          #include "CalcCPS.h"
+    5          
+    6          //extern QInnerParam InnerParam;
+    7          
+    8          
+    9          #ifdef  USE_LP_DOSECALC
+               
+               float OldDr = 0.0;
+               float NewDr;
+               float RtCps,NewCps;
+               
+               void CpsFilter(DWORD Cps)
+               {
+                   RtCps = (float)Cps;
+               }
+               
+               float CounterPH()
+               {
+                   NewCps = CalcLow(RtCps, OldDr, &NewDr);
+                   if (NewDr > 9999)
+                   {
+                       return NewCps;
+                   }
+                   
+                   OldDr = NewDr;
+                   return NewCps; // NewDr;
+               }
+               
+               void ClearCounter()
+               {
+                   InitCalcLow();
+               }
+               
+               
+               #else
+   39          
+   40          // 取平均值
+   41          #define CT 60   
+   42          DWORD CpsArr[CT];
+   43          static BOOL Full = FALSE;
+   44          static BYTE ArrCnt = 0;
+   45          static float CpsHis = 0;
+   46          
+   47          void InitArr()
+   48          {
+   49   1          BYTE i;
+   50   1          // 初始状态填15 个  1
+   51   1          memset(CpsArr,0,sizeof(CpsArr));
+   52   1          for (i=0;i<CT;i+=4)
+   53   1          {
+   54   2              CpsArr[i] = 1;
+   55   2          }
+   56   1          Full = TRUE;
+C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  09:58:12  PAGE 2   
+
+   57   1          ArrCnt = CT;
+   58   1          CpsHis = 15.0/CT;
+   59   1      }
+   60          
+   61          // 将计数压入堆栈
+   62          void PushCps(DWORD cps)
+   63          {
+   64   1          BYTE i;
+   65   1          if (ArrCnt >= CT)
+   66   1          {
+   67   2              Full = TRUE;
+   68   2              for (i=1;i<CT;i++)
+   69   2              {
+   70   3                  CpsArr[i-1] = CpsArr[i];
+   71   3              }
+   72   2              CpsArr[CT-1] = cps;
+   73   2          }
+   74   1          else
+   75   1          {
+   76   2              CpsArr[ArrCnt++] = cps;
+   77   2          }
+   78   1      }
+   79          
+   80          void ClearCounter()
+   81          {
+   82   1          memset(CpsArr,0,sizeof(CpsArr));
+   83   1          Full = FALSE;
+   84   1          ArrCnt = 0;
+   85   1          CpsHis = 0;
+   86   1      }
+   87          
+   88          
+   89          // 计数平滑
+   90          float CounterPH()
+   91          {
+   92   1          float Val = 0.0;
+   93   1          BYTE i;
+   94   1          
+   95   1          
+   96   1          Val = 0.0;
+   97   1          if (Full)
+   98   1          {
+   99   2              for (i=0;i<CT;i++)
+  100   2              {
+  101   3                  Val += CpsArr[i];
+  102   3              }
+  103   2              Val = Val/CT;
+  104   2          }
+  105   1          else
+  106   1          {
+  107   2              if (ArrCnt == 0)
+  108   2              {
+  109   3                  CpsHis = 0.2;
+  110   3                  return -1;
+  111   3              }
+  112   2              else
+  113   2              {
+  114   3                  for (i=0;i<ArrCnt;i++)
+  115   3                  {
+  116   4                      Val += CpsArr[i];
+  117   4                  }
+  118   3                  Val = Val/ArrCnt;
+  119   3              }
+  120   2          }
+  121   1      
+  122   1          if (Val < 0.2)
+C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  09:58:12  PAGE 3   
+
+  123   1          {
+  124   2              Val = 0.2;
+  125   2          }
+  126   1      
+  127   1          CpsHis = Val;
+  128   1          return Val;
+  129   1      }
+  130          
+  131          
+  132          float GetHis(BYTE time)
+  133          {
+  134   1          BYTE i;
+  135   1          float ret = 0.0;
+  136   1          if (Full)
+  137   1          {
+  138   2              for (i=CT-time;i<CT;i++)
+  139   2              {
+  140   3                  ret += CpsArr[i];
+  141   3              }
+  142   2      
+  143   2              return (ret/time);
+  144   2          }
+  145   1          else
+  146   1          {
+  147   2              if (time > ArrCnt)
+  148   2              {
+  149   3                  for (i=0;i<ArrCnt;i++)
+  150   3                  {
+  151   4                      ret += CpsArr[i];
+  152   4                  }
+  153   3      
+  154   3                  return (ret/ArrCnt);
+  155   3              }
+  156   2              else
+  157   2              {
+  158   3                  for (i=ArrCnt-time;i<ArrCnt;i++)
+  159   3                  {
+  160   4                      ret += CpsArr[i];
+  161   4                  }
+  162   3      
+  163   3                  return (ret/time);
+  164   3              }
+  165   2          }
+  166   1      
+  167   1          //return 0.0;
+  168   1      }
+  169          
+  170          
+  171          // time :  保留最后计数的时间
+  172          void ResvCps(BYTE time)
+  173          {
+  174   1          BYTE i;
+  175   1          if (Full)
+  176   1          {
+  177   2              for (i=0;i<CT;i++)
+  178   2              {
+  179   3                  if (i<time)
+  180   3                  {
+  181   4                      CpsArr[i] = CpsArr[CT-time+i];
+  182   4                  }
+  183   3                  else
+  184   3                  {
+  185   4                      CpsArr[i] = 0;
+  186   4                  }
+  187   3              }
+  188   2              ArrCnt = time;
+C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  09:58:12  PAGE 4   
+
+  189   2              Full = FALSE;
+  190   2          }
+  191   1          else
+  192   1          {
+  193   2              if (time < ArrCnt)
+  194   2              {
+  195   3                  for (i=0;i<ArrCnt;i++)
+  196   3                  {
+  197   4                      if (i<time)
+  198   4                      {
+  199   5                          CpsArr[i] = CpsArr[ArrCnt-time+i];
+  200   5                      }
+  201   4                      else
+  202   4                      {
+  203   5                          CpsArr[i] = 0;
+  204   5                      }
+  205   4                  }
+  206   3      
+  207   3                  ArrCnt = time;
+  208   3              }
+  209   2              else
+  210   2              {
+  211   3                  // 全部保留，就不做处理了
+  212   3              }
+  213   2          }
+  214   1      }
+  215          
+  216          // 计数压入队列
+  217          void AddCounter(DWORD Cps)
+  218          {
+  219   1          #if 0
+                   static float His120S = 0.0;
+                   //static float His60S  = 0.0;
+                   static float His30S  = 0.0;
+                   static float His10S  = 0.0;
+                   static float His5S   = 0.0;
+                   static float His3S   = 0.0;
+               
+                   float M1,M2,M3;
+                   #endif
+  229   1          
+  230   1          PushCps(Cps);
+  231   1      
+  232   1          #if 0
+                   His120S = GetHis(120);
+                   //His60S  = GetHis(60);
+                   His30S  = GetHis(30);
+                   His10S  = GetHis(10);
+                   His5S   = GetHis(5);
+                   His3S   = GetHis(3);
+               
+                   if (InnerParam.DevType == 4)
+                   {
+                       M1 = 30;   // 1mSv/h
+                       M2 = 2.5;  // 90uSv/h
+                       M3 = 1.5;  // 30uSv/h
+                   }
+                   else
+                   {
+                       M1 = 1000; // 0.8mSv/h
+                       M2 = 80;   // 50uSv/h
+                       M3 = 1.6;  // 1uSv/h
+                   }
+               
+                   if (His3S > M1)   
+                   {
+C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  09:58:12  PAGE 5   
+
+                       if ((His3S > His120S * 1.03) || (His3S < His120S / 1.03))
+                       {
+                           ResvCps(3);
+                       }
+                   }
+                   else if (His5S > M2)  
+                   {
+                       if ((His5S > His120S * 1.1) || (His5S < His120S / 1.1))
+                       {
+                           ResvCps(5);
+                       }
+                   }
+                   else if (His10S > M3)  
+                   {
+                       if ((His10S > His120S * 1.2) || (His10S < His120S / 1.2))
+                       {
+                           ResvCps(10);
+                       }
+                   }
+                   else if (His30S > 0.0)  
+                   {
+                       if ((His30S > His120S * 1.3) || (His30S < His120S / 1.3))
+                       {
+                           ResvCps(30);
+                       }
+                   }
+               
+                   #if 0
+                   else if (His60S > 0.0)  // 0.0u
+                   {
+                       if ((His60S > His120S * 1.1) || (His60S < His120S / 1.1))
+                       {
+                           ResvCps(60);
+                       }
+                   }
+                   #endif
+               
+                   #endif
+  293   1          
+  294   1      }
+  295          
+  296          
+  297          void CpsFilter(DWORD Cps)
+  298          {
+  299   1          static DWORD BigCpsErr[3] = {0};
+  300   1          static BYTE BigErrCnt = 0;
+  301   1      
+  302   1          static DWORD SmCpsErr[3] = {0};
+  303   1          static BYTE SmErrCnt = 0;
+  304   1          
+  305   1          //if (CpsHis > 1.0)
+  306   1          {
+  307   2              //if (Cps > (CpsHis * 3))  // 大计数
+  308   2              if(Cps>(CpsHis+3*sqrt(CpsHis)))
+  309   2              {
+  310   3                  SmErrCnt = 0;
+  311   3                  BigCpsErr[BigErrCnt++] = Cps;
+  312   3                  if (BigErrCnt == 3)
+  313   3                  {
+  314   4                      // 连续两个大计数则不算抖动
+  315   4                      ClearCounter();
+  316   4                      AddCounter(BigCpsErr[0]);
+  317   4                      AddCounter(BigCpsErr[1]);
+  318   4                      AddCounter(BigCpsErr[2]);
+  319   4                      BigErrCnt = 0;
+  320   4                  }
+C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  09:58:12  PAGE 6   
+
+  321   3              }
+  322   2              //else if (Cps < (CpsHis / 3))  // 小计数
+  323   2              else if(Cps<(CpsHis-3*sqrt(CpsHis)))
+  324   2              {
+  325   3                  BigErrCnt = 0;
+  326   3                  SmCpsErr[SmErrCnt++] = Cps;
+  327   3                  if (SmErrCnt == 3)
+  328   3                  {
+  329   4                      // 连续两个小计数则不算抖动
+  330   4                      ClearCounter();
+  331   4                      AddCounter(SmCpsErr[0]);
+  332   4                      AddCounter(SmCpsErr[1]);
+  333   4                      AddCounter(SmCpsErr[2]);
+  334   4                      SmErrCnt = 0;
+  335   4                  }
+  336   3              }
+  337   2              else
+  338   2              {
+  339   3                  AddCounter(Cps);
+  340   3                  BigErrCnt = 0;
+  341   3                  SmErrCnt = 0;
+  342   3              }
+  343   2          }
+  344   1          #if 0
+                   else
+                   {
+                       AddCounter(Cps);
+                       BigErrCnt = 0;
+                       SmErrCnt = 0;
+                   }
+                   #endif
+  352   1      }
+  353          
+  354          #endif
+  355          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      1448     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =       299     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        60     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

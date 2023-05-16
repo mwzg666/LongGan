@@ -120,6 +120,13 @@ u32 GetCounter(void)
 	Pluse3Cnt = 0;
 	return Return;
 }
+u32 GetHightCounter(void)
+{
+  	u32 Return;
+	Return = Pluse4Cnt;
+	Pluse4Cnt = 0;
+	return Return;
+}
 
 void Timer0_Isr (void) interrupt 1   //Timer0ÖÐ¶Ï
 {

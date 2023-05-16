@@ -34,6 +34,8 @@ void Timer4_Init(void);
 void SetVcoreUp (unsigned int level);
 void Timer1_Init(void);
 u32 GetCounter(void);
+u32 GetHightCounter(void);
+
     
 #ifdef __cplusplus
 }

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  14:35:12  PAGE 1   
+C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Sensor
@@ -66,7 +66,7 @@ stmt  level    source
    54   1              //Low_CPS = 10;
    55   1              //High_CPS = 10;
    56   1              /*****************************************************/
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  14:35:12  PAGE 2   
+C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 2   
 
    57   1              
    58   1              //FilterLow(Low_CPS);
@@ -134,7 +134,7 @@ stmt  level    source
   120   2                break;
   121   2                        
   122   2                        
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  14:35:12  PAGE 3   
+C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 3   
 
   123   2              case HIG_SEG:
   124   2              {
@@ -202,7 +202,7 @@ stmt  level    source
   186   1              if(SysRunState.s_DoseMSG.DoseRate>SysRunState.s_DoseMSG.MaxDoseRate)
   187   1              {
   188   2                      SysRunState.s_DoseMSG.MaxDoseRate = SysRunState.s_DoseMSG.DoseRate;
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  14:35:12  PAGE 4   
+C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 4   
 
   189   2              }
   190   1              CalcAlarmState(&SysRunState);           
@@ -270,7 +270,7 @@ stmt  level    source
   250   1              if ((me->s_DoseMSG.DoseRate >= me->stParam.s_Alarm.DoseRatePreAlarm)&&(me->s_DoseMSG.DoseRate < me->stPa
              -ram.s_Alarm.DoseRateAlarm))
   251   1              { 
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  14:35:12  PAGE 5   
+C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 5   
 
   252   2                      if((++me->DoseRatePreAlarmCnt) >= MIB_CST_DOSERATE_THRESHOLD_WARNING) {//连续两次报警则认为报警
   253   3                              me->s_DoseMSG.DRSt = 1;

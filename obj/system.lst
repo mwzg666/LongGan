@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  system                                                             16/05/23  14:35:12  PAGE 1   
+C251 COMPILER V5.60.0,  system                                                             16/05/23  17:10:55  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE system
@@ -66,7 +66,7 @@ stmt  level    source
    54          // 其他备注: 
    55          //========================================================================
    56          void Timer3_Init(void)
-C251 COMPILER V5.60.0,  system                                                             16/05/23  14:35:12  PAGE 2   
+C251 COMPILER V5.60.0,  system                                                             16/05/23  17:10:55  PAGE 2   
 
    57          {
    58   1          T3L = 0x00;
@@ -134,43 +134,50 @@ stmt  level    source
   120   1              Pluse3Cnt = 0;
   121   1              return Return;
   122   1      }
-C251 COMPILER V5.60.0,  system                                                             16/05/23  14:35:12  PAGE 3   
+C251 COMPILER V5.60.0,  system                                                             16/05/23  17:10:55  PAGE 3   
 
-  123          
-  124          void Timer0_Isr (void) interrupt 1   //Timer0中断
-  125          {
-  126   1          Timer0Cnt ++;
-  127   1          SysRunState.NoUartTime++;
-  128   1          Pluse3PortCnt++;
-  129   1          Pluse4PortCnt++;
-  130   1      }
-  131          
-  132          void Timer3_Isr() interrupt 19      //Timer3中断
-  133          {
-  134   1          LowOverFlowFlag3++;
-  135   1         
-  136   1      }
-  137          
-  138          void Timer4_Isr() interrupt 20      //Timer4中断
-  139          {
-  140   1          LowOverFlowFlag4++;
-  141   1         
-  142   1      }
-  143          
+  123          u32 GetHightCounter(void)
+  124          {
+  125   1              u32 Return;
+  126   1              Return = Pluse4Cnt;
+  127   1              Pluse4Cnt = 0;
+  128   1              return Return;
+  129   1      }
+  130          
+  131          void Timer0_Isr (void) interrupt 1   //Timer0中断
+  132          {
+  133   1          Timer0Cnt ++;
+  134   1          SysRunState.NoUartTime++;
+  135   1          Pluse3PortCnt++;
+  136   1          Pluse4PortCnt++;
+  137   1      }
+  138          
+  139          void Timer3_Isr() interrupt 19      //Timer3中断
+  140          {
+  141   1          LowOverFlowFlag3++;
+  142   1         
+  143   1      }
   144          
-  145          
+  145          void Timer4_Isr() interrupt 20      //Timer4中断
+  146          {
+  147   1          LowOverFlowFlag4++;
+  148   1         
+  149   1      }
+  150          
+  151          
+  152          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       262     ------
+  code size            =       281     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
-  edata size           =        18     ------
+  edata size           =        22     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------

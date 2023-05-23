@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 1   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE CalcCPS
@@ -66,7 +66,7 @@ stmt  level    source
                    InitQueue(&stCPSQ, (CPS_BUF_SIZE));
                    InitQueue(&stCPSAvgQ, (CPS_AVG_BUG_SIZE));
                }
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 2   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 2   
 
                
                // 每100ms调用一次
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          CpsFilter((DWORD)RealCPS);    
   120   1          CPS = CounterPH();
   121   1          if (CPS != -1)
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 3   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 3   
 
   122   1          {
   123   2              *NewuSvh = CpsToUsv_h(parama, paramb, paramc, CPS);
@@ -202,7 +202,7 @@ stmt  level    source
   182          //static float AllTimeCPS,AllTimeSec;//长时间累加的计数和时间
   183          /******************************************************
   184          平滑算法
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 4   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 4   
 
   185          //squlink Q 对象
   186          */
@@ -270,7 +270,7 @@ stmt  level    source
                    {
                        bendi->updownTimes++;
                        if(bendi->updownTimes >= 2)
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 5   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 5   
 
                        {
                            bendi->updownTimes = 0;
@@ -338,7 +338,7 @@ stmt  level    source
                            if(bendi->down30 > 0)
                            {
                                bendi->down30--;
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 6   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 6   
 
                            }
                
@@ -406,7 +406,7 @@ stmt  level    source
                                                uSvh = CpsToUsv_h(parama, paramb, paramc, ave);
                                                *NewuSvh = uSvh;
                                                bendi->OlduSvh6 = uSvh;
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 7   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 7   
 
                                                bendi->OlduSvh5 = uSvh;
                                                bendi->OlduSvh4 = uSvh;
@@ -474,7 +474,7 @@ stmt  level    source
                                                        *NewuSvh = uSvh;
                                                        bendi->down30 = 0;
                                                        bendi->OlduSvh6 = uSvh;
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 8   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 8   
 
                                                        bendi->OlduSvh5 = uSvh;
                                                        bendi->OlduSvh4 = uSvh;
@@ -542,7 +542,7 @@ stmt  level    source
                    //前面都不满足则用实际所有数据的平均值
                        Cnt = Lenqueue(avgQ);
                        //连续3秒的计数都大于0.5，
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 9   
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 9   
 
                        if((bendi->OlduSvh2 > 30)&&(bendi->OlduSvh3 > 30)&&(bendi->OlduSvh4 > 30))
                        {
@@ -611,7 +611,7 @@ Module Information          Static   Overlayable
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
-C251 COMPILER V5.60.0,  CalcCPS                                                            16/05/23  17:10:55  PAGE 10  
+C251 COMPILER V5.60.0,  CalcCPS                                                            23/05/23  11:26:50  PAGE 10  
 
   xdata-const size     =    ------     ------
   edata size           =        64     ------

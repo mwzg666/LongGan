@@ -70,10 +70,10 @@ void sysSleep(void)
 
 void DevSleep(void)
 {
-  	SENSOR_POWER_OFF();//暂时先不关高压
+  	SENSOR_POWER_OFF();                     //暂时先不关高压
 	BLUE_CFG_MODE();
 	delay_ms(2500);
-	uartble_send("AT+CLEARADDR\r\n",14);//清除远端蓝牙地址
+	uartble_send("AT+CLEARADDR\r\n",14);    //清除远端蓝牙地址
 	delay_ms(500);
 	BLUE_WORK_MODE();
 	BLUE_SLEEP();

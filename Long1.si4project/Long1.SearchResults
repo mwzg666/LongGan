@@ -1,0 +1,8 @@
+---- gDoseSeg Matches (7 in 1 files) ----
+Sensor.c (Hardware\Sensor) line 19 : static u8 gDoseSeg = LOW_SEG;//当前处在的段
+CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :     switch(gDoseSeg)
+CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :                 gDoseSeg = HIG_SEG;
+CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :                 gDoseSeg = LOW_SEG;
+CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :               gDoseSeg = LOW_SEG;
+CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :               gDoseSeg = HIG_SEG;
+CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :         default: gDoseSeg = LOW_SEG;break;

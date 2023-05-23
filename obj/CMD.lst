@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 1   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE CMD
@@ -66,7 +66,7 @@ stmt  level    source
    54   1              t = buf[3];
    55   1              buf[3] = buf[0];
    56   1              buf[0] = t;
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 2   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 2   
 
    57   1              t = buf[2];
    58   1              buf[2] = buf[1];
@@ -134,7 +134,7 @@ stmt  level    source
   120   1          EEPROM_SectorErase(512);
   121   1              SysRunState.stParam.ParaCheckSum = CheckSum((BYTE *)&SysRunState.stParam,sizeof(LP_PARAM)-2);//add by ke
              -vin at 20150417
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 3   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 3   
 
   122   1              if (!EEPROM_write(0, (u8 *)&SysRunState.stParam, sizeof(LP_PARAM)))
   123   1          {
@@ -202,7 +202,7 @@ stmt  level    source
   185   4                              }
   186   3                              crcRev = cdata[i+4+gs_CMD.length] + cdata[i+5+gs_CMD.length]*256;
   187   3                              crcOut = CRC16(&cdata[i],gs_CMD.length+4);
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 4   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 4   
 
   188   3                              if(crcRev != crcOut)
   189   3                              {
@@ -270,7 +270,7 @@ stmt  level    source
   251   4      
   252   4                                      case 'B'://写报警参数
   253   4                                              ACK_CMD_B(&cdata[i+4]);
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 5   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 5   
 
   254   4                                      break;
   255   4      
@@ -338,7 +338,7 @@ stmt  level    source
   317   1         
   318   1          SendData('R',(uint8_t*)&red,sizeof(SYS_PRAM));
   319   1      }
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 6   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 6   
 
   320          
   321          
@@ -406,7 +406,7 @@ stmt  level    source
   383          
   384          void ACK_CMD_V(void)
   385          { 
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 7   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 7   
 
   386   1          STU_DOSERATE gs_Dose;
   387   1          gs_Dose.C1 = FloatToSmall(SysRunState.s_DoseMSG.C1);
@@ -474,7 +474,7 @@ stmt  level    source
   449          /*******************************************************************************
   450          功能：清除累计剂量(1)响应
   451          输入：
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 8   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 8   
 
   452          输出：
   453          *******************************************************************************/
@@ -542,7 +542,7 @@ stmt  level    source
   515          功能：电池电量查询(5)响应
   516          输入：
   517          输出：
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 9   
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 9   
 
   518          *******************************************************************************/
   519          STU_BATTERY s_Bat={0};
@@ -610,7 +610,7 @@ stmt  level    source
   581          // 当前作者:
   582          // 其他备注: 
   583          //========================================================================
-C251 COMPILER V5.60.0,  CMD                                                                16/05/23  17:10:54  PAGE 10  
+C251 COMPILER V5.60.0,  CMD                                                                23/05/23  11:26:49  PAGE 10  
 
   584          WORD CheckSum(BYTE *buf, WORD len)
   585          {

@@ -36,7 +36,6 @@ void Timer1_Init(void);
 u32 GetCounter(void);
 u32 GetHightCounter(void);
 
-
     
 #ifdef __cplusplus
 }

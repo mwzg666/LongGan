@@ -141,14 +141,14 @@ typedef struct
 //计数结构体    LP
 typedef struct
 {
-	float  Dose_B;  uint8_t AjSt;   //0x01+正在调整//β累积剂量
-    float  MaxDoseRate_B;  uint8_t HvSt;   //0x02+高压故障//β最大剂量率
+	float  Aj;  uint8_t AjSt;   //0x01+正在调整
+    float  Hv;  uint8_t HvSt;   //0x02+高压故障
     float  C1;  uint8_t C1St;   //0x03+计数值1+报警状态（1B）（α计数）//C1 低通道剂量率 LP
     float  C2;  uint8_t C2St;   //0x04+计数值2+报警状态（1B）（β计数）//C2 高通道剂量率 LP
-    float  C3;  uint8_t C3St;   // 0x05+计数值3+报警状态（1B）(α+β)//β剂量率
+    float  C3;  uint8_t C3St;   // 0x05+计数值3+报警状态（1B）(α+β)
     float  P1;  uint8_t P1St;   //0x06+平滑计数值1+报警状态（1B）（α计数）//P1低通道原始计数 LP
     float  P2;  uint8_t P2St;   //0x07+平滑计数值2+报警状态（1B）（α计数）//P2高通道原始计数 LP
-    float  P3;  uint8_t P3St;   //0x08+平滑计数值3+报警状态（1B）（α计数）//β计数
+    float  P3;  uint8_t P3St;   //0x08+平滑计数值3+报警状态（1B）（α计数）
     float  DoseRate;  uint8_t DRSt;   // 0x09+剂量率+报警状态（1B）uSv/h   LP
     float  Dose;  uint8_t DoSt;   // 0x0A+累计剂量+报警状态（1B）uSv   LP
 	float  MaxDoseRate;  uint8_t MRSt;	 //最大剂量率uSv/h   LP 

@@ -2,7 +2,7 @@
 #include "CalcDoseRate.h"
 #include "CalcCPS.h"
 #include "DoseRate.h"
-#include "system.h"
+
 
 
 
@@ -19,7 +19,7 @@
 static u8 gDoseSeg = LOW_SEG;//当前处在的段
 
 extern LP_SYSTEM_STTAE SysRunState;
-
+extern u32 GetCounter(void);
 u32 Low_CPS = 0;
 u32 High_CPS = 0;
 
@@ -60,7 +60,7 @@ void CaptureSensorPluseCounter(void)
 	//LowSumCPS += Low_CPS;
 	LowSumCPS = GetCounter();
 	//HighSumCPS += High_CPS;
-	HighSumCPS = GetHightCounter();
+	//HighSumCPS = GetCounter();
 	if((LowSumCPS == 0)&&(SysRunState.LowChanneloff == 0))
 	{
 	  	SysRunState.LChannelNoCountTime++;
@@ -162,7 +162,7 @@ void CaptureSensorPluseCounter(void)
     }
 
 	LowNOSmothCPS = LowSumCPS;
-	HighNOSmothCPS = HighSumCPS;	
+	HighNOSmothCPS = LowSumCPS; // HighSumCPS;	
 		
 	HighSumCPS = 0;
 	LowSumCPS = 0;

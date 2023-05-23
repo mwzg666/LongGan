@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 1   
+C251 COMPILER V5.60.0,  Sensor                                                             23/05/23  11:26:50  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE Sensor
@@ -14,7 +14,7 @@ stmt  level    source
     2          #include "CalcDoseRate.h"
     3          #include "CalcCPS.h"
     4          #include "DoseRate.h"
-    5          
+    5          #include "system.h"
     6          
     7          
     8          
@@ -31,7 +31,7 @@ stmt  level    source
    19          static u8 gDoseSeg = LOW_SEG;//当前处在的段
    20          
    21          extern LP_SYSTEM_STTAE SysRunState;
-   22          extern u32 GetCounter(void);
+   22          
    23          u32 Low_CPS = 0;
    24          u32 High_CPS = 0;
    25          
@@ -66,7 +66,7 @@ stmt  level    source
    54   1              //Low_CPS = 10;
    55   1              //High_CPS = 10;
    56   1              /*****************************************************/
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 2   
+C251 COMPILER V5.60.0,  Sensor                                                             23/05/23  11:26:50  PAGE 2   
 
    57   1              
    58   1              //FilterLow(Low_CPS);
@@ -74,7 +74,7 @@ stmt  level    source
    60   1              //LowSumCPS += Low_CPS;
    61   1              LowSumCPS = GetCounter();
    62   1              //HighSumCPS += High_CPS;
-   63   1              //HighSumCPS = GetCounter();
+   63   1              HighSumCPS = GetHightCounter();
    64   1              if((LowSumCPS == 0)&&(SysRunState.LowChanneloff == 0))
    65   1              {
    66   2                      SysRunState.LChannelNoCountTime++;
@@ -134,7 +134,7 @@ stmt  level    source
   120   2                break;
   121   2                        
   122   2                        
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 3   
+C251 COMPILER V5.60.0,  Sensor                                                             23/05/23  11:26:50  PAGE 3   
 
   123   2              case HIG_SEG:
   124   2              {
@@ -178,7 +178,7 @@ stmt  level    source
   162   2          }
   163   1      
   164   1              LowNOSmothCPS = LowSumCPS;
-  165   1              HighNOSmothCPS = LowSumCPS; // HighSumCPS;      
+  165   1              HighNOSmothCPS = HighSumCPS;    
   166   1                      
   167   1              HighSumCPS = 0;
   168   1              LowSumCPS = 0;
@@ -202,7 +202,7 @@ stmt  level    source
   186   1              if(SysRunState.s_DoseMSG.DoseRate>SysRunState.s_DoseMSG.MaxDoseRate)
   187   1              {
   188   2                      SysRunState.s_DoseMSG.MaxDoseRate = SysRunState.s_DoseMSG.DoseRate;
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 4   
+C251 COMPILER V5.60.0,  Sensor                                                             23/05/23  11:26:50  PAGE 4   
 
   189   2              }
   190   1              CalcAlarmState(&SysRunState);           
@@ -270,7 +270,7 @@ stmt  level    source
   250   1              if ((me->s_DoseMSG.DoseRate >= me->stParam.s_Alarm.DoseRatePreAlarm)&&(me->s_DoseMSG.DoseRate < me->stPa
              -ram.s_Alarm.DoseRateAlarm))
   251   1              { 
-C251 COMPILER V5.60.0,  Sensor                                                             16/05/23  17:10:55  PAGE 5   
+C251 COMPILER V5.60.0,  Sensor                                                             23/05/23  11:26:50  PAGE 5   
 
   252   2                      if((++me->DoseRatePreAlarmCnt) >= MIB_CST_DOSERATE_THRESHOLD_WARNING) {//连续两次报警则认为报警
   253   3                              me->s_DoseMSG.DRSt = 1;
@@ -320,7 +320,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       912     ------
+  code size            =       927     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

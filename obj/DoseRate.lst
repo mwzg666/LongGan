@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  17:10:55  PAGE 1   
+C251 COMPILER V5.60.0,  DoseRate                                                           23/05/23  11:26:50  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE DoseRate
@@ -66,7 +66,7 @@ stmt  level    source
    54   2              CpsArr[i] = 1;
    55   2          }
    56   1          Full = TRUE;
-C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  17:10:55  PAGE 2   
+C251 COMPILER V5.60.0,  DoseRate                                                           23/05/23  11:26:50  PAGE 2   
 
    57   1          ArrCnt = CT;
    58   1          CpsHis = 15.0/CT;
@@ -134,7 +134,7 @@ stmt  level    source
   120   2          }
   121   1      
   122   1          if (Val < 0.2)
-C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  17:10:55  PAGE 3   
+C251 COMPILER V5.60.0,  DoseRate                                                           23/05/23  11:26:50  PAGE 3   
 
   123   1          {
   124   2              Val = 0.2;
@@ -202,7 +202,7 @@ stmt  level    source
   186   4                  }
   187   3              }
   188   2              ArrCnt = time;
-C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  17:10:55  PAGE 4   
+C251 COMPILER V5.60.0,  DoseRate                                                           23/05/23  11:26:50  PAGE 4   
 
   189   2              Full = FALSE;
   190   2          }
@@ -270,7 +270,7 @@ stmt  level    source
                
                    if (His3S > M1)   
                    {
-C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  17:10:55  PAGE 5   
+C251 COMPILER V5.60.0,  DoseRate                                                           23/05/23  11:26:50  PAGE 5   
 
                        if ((His3S > His120S * 1.03) || (His3S < His120S / 1.03))
                        {
@@ -338,7 +338,7 @@ stmt  level    source
   318   4                      AddCounter(BigCpsErr[2]);
   319   4                      BigErrCnt = 0;
   320   4                  }
-C251 COMPILER V5.60.0,  DoseRate                                                           16/05/23  17:10:55  PAGE 6   
+C251 COMPILER V5.60.0,  DoseRate                                                           23/05/23  11:26:50  PAGE 6   
 
   321   3              }
   322   2              //else if (Cps < (CpsHis / 3))  // Ð¡¼ÆÊý

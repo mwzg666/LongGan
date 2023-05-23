@@ -1881,7 +1881,7 @@
         <Name>User\main.h</Name>
         <ColumnNumber>24</ColumnNumber>
         <TopLine>123</TopLine>
-        <CurrentLine>145</CurrentLine>
+        <CurrentLine>146</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -1924,9 +1924,9 @@
       </Doc>
       <Doc>
         <Name>.\Hardware\Sensor\Sensor.c</Name>
-        <ColumnNumber>29</ColumnNumber>
-        <TopLine>47</TopLine>
-        <CurrentLine>63</CurrentLine>
+        <ColumnNumber>0</ColumnNumber>
+        <TopLine>7</TopLine>
+        <CurrentLine>38</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>

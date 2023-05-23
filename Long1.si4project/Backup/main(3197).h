@@ -116,8 +116,6 @@ typedef struct
 	float GaoYaCanshuA;//高量程通道校准因子A 	LP
 	float GaoYaCanshuB;// 高量程通道校准因子B 	LP
 	float GaoYaCanshuC;// 高量程通道校准因子C 	LP
-
-    
 }SYS_PRAM;
 //报警信息
 typedef struct

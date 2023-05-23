@@ -26,6 +26,11 @@ u32 High_CPS = 0;
 static float LowSmothCPS,HighSmothCPS;
 static float LowNOSmothCPS,HighNOSmothCPS;
 static float LowSumCPS,HighSumCPS;
+
+static float SmothCPS_B;
+static float NOSmothCPS_B;
+static float SumCPS_B;
+
 //static float* pSmothCPS = NULL;
 //static float Calc_Pa,Calc_Pb,Calc_Pc;
 //static U8 useL_H;//使用低通道还是高通道
@@ -82,42 +87,53 @@ void CaptureSensorPluseCounter(void)
     {
         case LOW_SEG:
         {
-             //SysRunState.s_DoseMSG.C2 = SysRunState.s_DoseMSG.C1;//高通道剂量率清零
-              //LOWCHANNEL_POWER_ON();
-              //P1IE |= BIT1;//打开低量程定制中断
-              SysRunState.LowChanneloff = 0;//低通道打开
-              LowSmothCPS = CalcLow(
+            //SysRunState.s_DoseMSG.C2 = SysRunState.s_DoseMSG.C1;//高通道剂量率清零
+            //LOWCHANNEL_POWER_ON();
+            //P1IE |= BIT1;//打开低量程定制中断
+            SysRunState.LowChanneloff = 0;//低通道打开
+            LowSmothCPS = CalcLow(
                                 SysRunState.stParam.s_SysParam.DiYaCanshuA, 
                                 SysRunState.stParam.s_SysParam.DiYaCanshuB, 
                                 SysRunState.stParam.s_SysParam.DiYaCanshuC,
                                 LowSumCPS, 
                                 SysRunState.s_DoseMSG.DoseRate,
                                 &SysRunState.s_DoseMSG.C1);
-              if (LowSmothCPS != -1)
-              {
-                SysRunState.s_DoseMSG.DoseRate = SysRunState.s_DoseMSG.C1;
-              }
-              //else
-              //{
-              //  SysRunState.s_DoseMSG.DoseRate = SysRunState.s_DoseMSG.C2;
-              //}
-              
-              if(SysRunState.s_DoseMSG.DoseRate >= USE_LOW_USV)//
-              {
-                gDoseSeg = HIG_SEG;
-                GM_HIGH;
-                ClearCounter();
-              }
 
-              #if 0
-              else
-              {
+            SmothCPS_B = CalcLow(SysRunState.stParam.s_SysParam.DiYaCanshuA, 
+                                SysRunState.stParam.s_SysParam.DiYaCanshuB, 
+                                SysRunState.stParam.s_SysParam.DiYaCanshuC,
+                                LowSumCPS, 
+                                SysRunState.s_DoseMSG.DoseRate,
+                                &SysRunState.s_DoseMSG.C3);                              
+            if (LowSmothCPS != -1)
+            {
+                SysRunState.s_DoseMSG.DoseRate = SysRunState.s_DoseMSG.C1;
+            }
+            if (SmothCPS_B != -1)
+            {
+                SysRunState.s_DoseMSG.DoseRate = SysRunState.s_DoseMSG.C3;
+            }
+            //else
+            //{
+            //      SysRunState.s_DoseMSG.DoseRate = SysRunState.s_DoseMSG.C2;
+            //}
+
+            if(SysRunState.s_DoseMSG.DoseRate >= USE_LOW_USV)//
+            {
+                gDoseSeg = HIG_SEG;
+                //GM_HIGH;
+                ClearCounter();
+            }
+
+            #if 0
+            else
+            {
                 gDoseSeg = LOW_SEG;
                 GM_LOW;
-              }
-              #endif
-          }
-          break;
+            }
+            #endif
+            }
+            break;
                   
                   
         case HIG_SEG:
@@ -163,6 +179,7 @@ void CaptureSensorPluseCounter(void)
 
 	LowNOSmothCPS = LowSumCPS;
 	HighNOSmothCPS = HighSumCPS;	
+    NOSmothCPS_B = LowSumCPS;
 		
 	HighSumCPS = 0;
 	LowSumCPS = 0;
@@ -175,17 +192,24 @@ void CaptureSensorPluseCounter(void)
 	
 	SysRunState.s_DoseMSG.P1 = LowNOSmothCPS;
 	SysRunState.s_DoseMSG.P2 = HighNOSmothCPS;
+	SysRunState.s_DoseMSG.P3 = NOSmothCPS_B;
 
 	/*if(SysRunState.testtime>0)
 	{
 	  	SysRunState.s_DoseMSG.DoseRate = 999.9;
 	}*/
 	SysRunState.s_DoseMSG.Dose += SysRunState.s_DoseMSG.DoseRate/3600.0f;
+    SysRunState.s_DoseMSG.Dose_B += SysRunState.s_DoseMSG.DoseRate/3600.0f;
 	//SysRunState.s_DoseMSG.Dose = LowNOSmothCPS;
 	
 	if(SysRunState.s_DoseMSG.DoseRate>SysRunState.s_DoseMSG.MaxDoseRate)
 	{
 		SysRunState.s_DoseMSG.MaxDoseRate = SysRunState.s_DoseMSG.DoseRate;
+	}
+    
+    if(SysRunState.s_DoseMSG.DoseRate>SysRunState.s_DoseMSG.MaxDoseRate_B)
+	{
+		SysRunState.s_DoseMSG.MaxDoseRate_B = SysRunState.s_DoseMSG.DoseRate;
 	}
 	CalcAlarmState(&SysRunState);           
 

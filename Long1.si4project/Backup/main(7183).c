@@ -46,10 +46,6 @@ void InitParam()
 	SysRunState.stParam.s_SysParam.GaoYaCanshuA = 33.6;        //高量程通道校准因子
 	SysRunState.stParam.s_SysParam.GaoYaCanshuB = 0.000023;    //高量程通道校准因子
 	SysRunState.stParam.s_SysParam.GaoYaCanshuC = 0.83;        //高量程通道校准因子
-
-    //SysRunState.stParam.s_SysParam.BCanshuA = 0.63;            //β校准因子A
-	//SysRunState.stParam.s_SysParam.BCanshuB = 0.00019;         //β校准因子B
-	//SysRunState.stParam.s_SysParam.BCanshuC = 0.83;            //β校准因子C
 	
 	SysRunState.stParam.s_Alarm.DosePreAlarm = 300;            //300uSv
 	SysRunState.stParam.s_Alarm.DoseAlarm = 400;               //400uSv
@@ -62,8 +58,7 @@ void InitParam()
 void DevInit(void)
 {
     BLUE_PWOFF();
-    GDoseSeg = LOW_SEG;
-  	//GM_LOW;
+  	GM_LOW;
 	BLUE_CFG_MODE();
 	BLUE_WAKEUP();
 }

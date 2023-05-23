@@ -2,7 +2,6 @@
 #include <math.h>
 #include "DoseRate.h"
 #include "CalcCPS.h"
-#include "sensor.h"
 
 //extern QInnerParam InnerParam;
 
@@ -40,23 +39,19 @@ void ClearCounter()
 
 // 取平均值
 #define CT 60   
-DWORD CpsArr[2][CT];
-
+DWORD CpsArr[CT];
 static BOOL Full = FALSE;
 static BYTE ArrCnt = 0;
 static float CpsHis = 0;
 
 void InitArr()
 {
-    BYTE i,j;
+    BYTE i;
     // 初始状态填15 个  1
     memset(CpsArr,0,sizeof(CpsArr));
-    for(j = 0;j < 2;j++)
+    for (i=0;i<CT;i+=4)
     {
-        for (i=0;i<CT;i+=4)
-        {
-            CpsArr[j][i] = 1;
-        }
+        CpsArr[i] = 1;
     }
     Full = TRUE;
     ArrCnt = CT;
@@ -67,38 +62,18 @@ void InitArr()
 void PushCps(DWORD cps)
 {
     BYTE i;
-    if(GDoseSeg == LOW_SEG)
+    if (ArrCnt >= CT)
     {
-        if (ArrCnt >= CT)
+        Full = TRUE;
+        for (i=1;i<CT;i++)
         {
-            Full = TRUE;
-            for (i=1;i<CT;i++)
-            {
-                CpsArr[0][i-1] = CpsArr[0][i];
-            }
-            CpsArr[0][CT-1] = cps;
+            CpsArr[i-1] = CpsArr[i];
         }
-        else
-        {
-            CpsArr[0][ArrCnt++] = cps;
-        }
+        CpsArr[CT-1] = cps;
     }
-
-    if(GDoseSeg == HIG_SEG)
+    else
     {
-        if (ArrCnt >= CT)
-        {
-            Full = TRUE;
-            for (i=1;i<CT;i++)
-            {
-                CpsArr[1][i-1] = CpsArr[1][i];
-            }
-            CpsArr[1][CT-1] = cps;
-        }
-        else
-        {
-            CpsArr[1][ArrCnt++] = cps;
-        }
+        CpsArr[ArrCnt++] = cps;
     }
 }
 
@@ -117,77 +92,38 @@ float CounterPH()
     float Val = 0.0;
     BYTE i;
     
-    if(GDoseSeg == LOW_SEG)
+    
+    Val = 0.0;
+    if (Full)
     {
-        Val = 0.0;
-        if (Full)
+        for (i=0;i<CT;i++)
         {
-            for (i=0;i<CT;i++)
-            {
-                Val += CpsArr[0][i];
-            }
-            Val = Val/CT;
-
+            Val += CpsArr[i];
+        }
+        Val = Val/CT;
+    }
+    else
+    {
+        if (ArrCnt == 0)
+        {
+            CpsHis = 0.2;
+            return -1;
         }
         else
         {
-            if (ArrCnt == 0)
+            for (i=0;i<ArrCnt;i++)
             {
-                CpsHis = 0.2;
-                return -1;
+                Val += CpsArr[i];
             }
-            else
-            {
-                for (i=0;i<ArrCnt;i++)
-                {
-                    Val += CpsArr[0][i];
-                }
-                Val = Val/ArrCnt;
-            }
-        }
-
-        if (Val < 0.2)
-        {
-            Val = 0.2;
+            Val = Val/ArrCnt;
         }
     }
 
-    
-    if(GDoseSeg == HIG_SEG)
-        {
-            Val = 0.0;
-            if (Full)
-            {
-                for (i=0;i<CT;i++)
-                {
-                    Val += CpsArr[1][i];
-                }
-                Val = Val/CT;
-    
-            }
-            else
-            {
-                if (ArrCnt == 0)
-                {
-                    CpsHis = 0.2;
-                    return -1;
-                }
-                else
-                {
-                    for (i=0;i<ArrCnt;i++)
-                    {
-                        Val += CpsArr[1][i];
-                    }
-                    Val = Val/ArrCnt;
-                }
-            }
-    
-            if (Val < 0.2)
-            {
-                Val = 0.2;
-            }
-        }
-    
+    if (Val < 0.2)
+    {
+        Val = 0.2;
+    }
+
     CpsHis = Val;
     return Val;
 }
@@ -195,44 +131,39 @@ float CounterPH()
 
 float GetHis(BYTE time)
 {
-    BYTE i,j;
+    BYTE i;
     float ret = 0.0;
     if (Full)
     {
-        for(j = 0;j<2;j++)
+        for (i=CT-time;i<CT;i++)
         {
-            for (i=CT-time;i<CT;i++)
-            {
-                ret += CpsArr[j][i];
-            }
+            ret += CpsArr[i];
         }
+
         return (ret/time);
     }
     else
     {
         if (time > ArrCnt)
         {
-            for(j = 0;j<2;j++)
+            for (i=0;i<ArrCnt;i++)
             {
-                for (i=0;i<ArrCnt;i++)
-                {
-                    ret += CpsArr[j][i];
-                }
+                ret += CpsArr[i];
             }
+
             return (ret/ArrCnt);
         }
         else
         {
-            for(j = 0;j<2;j++)
+            for (i=ArrCnt-time;i<ArrCnt;i++)
             {
-                for (i=ArrCnt-time;i<ArrCnt;i++)
-                {
-                    ret += CpsArr[j][i];
-                }
+                ret += CpsArr[i];
             }
+
             return (ret/time);
         }
     }
+
     //return 0.0;
 }
 
@@ -241,89 +172,43 @@ float GetHis(BYTE time)
 void ResvCps(BYTE time)
 {
     BYTE i;
-    if(GDoseSeg == LOW_SEG)
+    if (Full)
     {
-        if (Full)
+        for (i=0;i<CT;i++)
         {
-            for (i=0;i<CT;i++)
+            if (i<time)
             {
-                if (i<time)
-                {
-                    CpsArr[0][i] = CpsArr[0][CT-time+i];
-                }
-                else
-                {
-                    CpsArr[0][i] = 0;
-                }
-            }
-            ArrCnt = time;
-            Full = FALSE;
-        }
-        else
-        {
-            if (time < ArrCnt)
-            {
-                for (i=0;i<ArrCnt;i++)
-                {
-                    if (i<time)
-                    {
-                        CpsArr[0][i] = CpsArr[0][ArrCnt-time+i];
-                    }
-                    else
-                    {
-                        CpsArr[0][i] = 0;
-                    }
-                }
-
-                ArrCnt = time;
+                CpsArr[i] = CpsArr[CT-time+i];
             }
             else
             {
-                // 全部保留，就不做处理了
+                CpsArr[i] = 0;
             }
         }
+        ArrCnt = time;
+        Full = FALSE;
     }
-
-    if(GDoseSeg == HIG_SEG)
+    else
     {
-        if (Full)
+        if (time < ArrCnt)
         {
-            for (i=0;i<CT;i++)
+            for (i=0;i<ArrCnt;i++)
             {
                 if (i<time)
                 {
-                    CpsArr[1][i] = CpsArr[1][CT-time+i];
+                    CpsArr[i] = CpsArr[ArrCnt-time+i];
                 }
                 else
                 {
-                    CpsArr[1][i] = 0;
+                    CpsArr[i] = 0;
                 }
             }
+
             ArrCnt = time;
-            Full = FALSE;
         }
         else
         {
-            if (time < ArrCnt)
-            {
-                for (i=0;i<ArrCnt;i++)
-                {
-                    if (i<time)
-                    {
-                        CpsArr[1][i] = CpsArr[1][ArrCnt-time+i];
-                    }
-                    else
-                    {
-                        CpsArr[1][i] = 0;
-                    }
-                }
-
-                ArrCnt = time;
-            }
-            else
-            {
-                // 全部保留，就不做处理了
-            }
+            // 全部保留，就不做处理了
         }
     }
 }

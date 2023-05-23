@@ -314,10 +314,6 @@ void ACK_CMD_R(void)
     red.GaoYaCanshuA = FloatToSmall(SysRunState.stParam.s_SysParam.GaoYaCanshuA);
     red.GaoYaCanshuB = FloatToSmall(SysRunState.stParam.s_SysParam.GaoYaCanshuB);
     red.GaoYaCanshuC = FloatToSmall(SysRunState.stParam.s_SysParam.GaoYaCanshuC);
-
-    //red.BCanshuA = FloatToSmall(SysRunState.stParam.s_SysParam.BCanshuA);
-    //red.BCanshuB = FloatToSmall(SysRunState.stParam.s_SysParam.BCanshuB);
-    //red.BCanshuC = FloatToSmall(SysRunState.stParam.s_SysParam.BCanshuC);
    
     SendData('R',(uint8_t*)&red,sizeof(SYS_PRAM));
 }
@@ -358,10 +354,6 @@ void ACK_CMD_W(unsigned char *cdata)
     SysRunState.stParam.s_SysParam.GaoYaCanshuB = FloatToSmall(wcm.GaoYaCanshuB);
     SysRunState.stParam.s_SysParam.GaoYaCanshuC = FloatToSmall(wcm.GaoYaCanshuC);
 
-    //SysRunState.stParam.s_SysParam.BCanshuA = FloatToSmall(wcm.BCanshuA);
-    //SysRunState.stParam.s_SysParam.BCanshuB = FloatToSmall(wcm.BCanshuB);
-    //SysRunState.stParam.s_SysParam.BCanshuC = FloatToSmall(wcm.BCanshuC);
-
 	SendData('W',NULL,0);
 	SaveParam();
 }
@@ -394,18 +386,14 @@ void ACK_CMD_V(void)
     STU_DOSERATE gs_Dose;
     gs_Dose.C1 = FloatToSmall(SysRunState.s_DoseMSG.C1);
     gs_Dose.C2 = FloatToSmall(SysRunState.s_DoseMSG.C2);
-    gs_Dose.C3 = FloatToSmall(SysRunState.s_DoseMSG.C3);
     
     gs_Dose.Dose = FloatToSmall(SysRunState.s_DoseMSG.Dose);
-    gs_Dose.Dose_B = FloatToSmall(SysRunState.s_DoseMSG.Dose_B);
     gs_Dose.DoseRate = FloatToSmall(SysRunState.s_DoseMSG.DoseRate);
     gs_Dose.DRSt = SysRunState.s_DoseMSG.DRSt;
     gs_Dose.MaxDoseRate = FloatToSmall(SysRunState.s_DoseMSG.MaxDoseRate);
-    gs_Dose.MaxDoseRate_B = FloatToSmall(SysRunState.s_DoseMSG.MaxDoseRate_B);
     
     gs_Dose.P1 = FloatToSmall(SysRunState.s_DoseMSG.P1);
     gs_Dose.P2 = FloatToSmall(SysRunState.s_DoseMSG.P2);
-    gs_Dose.P3 = FloatToSmall(SysRunState.s_DoseMSG.P3);
     
 	SendData('V',(uint8_t*)&gs_Dose,sizeof(STU_DOSERATE));
 }
@@ -466,7 +454,6 @@ void ACK_CMD_E(void)
 void ACK_CMD_ClearDoseSum(void)
 {
 	SysRunState.s_DoseMSG.Dose = 0;
-    SysRunState.s_DoseMSG.Dose_B = 0;
 	SendData(1,NULL,0);
 }
 
@@ -480,7 +467,6 @@ void ACK_CMD_ClearDoseSum(void)
 void ACK_CMD_ClearMaxDoseRate(void)
 {
 	SysRunState.s_DoseMSG.MaxDoseRate = 0;
-    SysRunState.s_DoseMSG.MaxDoseRate_B = 0;
 	SendData(2,NULL,0);
 }
 
@@ -566,11 +552,11 @@ void ACK_CMD_GmSw(unsigned char Gm)
 {
 	if (Gm == 1)
     {
-        GDoseSeg = HIG_SEG;
+        GM_HIGH;
 	}
     else
     {
-        GDoseSeg = LOW_SEG;
+        GM_LOW;
     }
     
 	SendData(7,NULL,0);

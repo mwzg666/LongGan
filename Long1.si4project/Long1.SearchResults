@@ -1,8 +1,8 @@
----- gDoseSeg Matches (7 in 1 files) ----
-Sensor.c (Hardware\Sensor) line 19 : static u8 gDoseSeg = LOW_SEG;//当前处在的段
-CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :     switch(gDoseSeg)
-CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :                 gDoseSeg = HIG_SEG;
-CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :                 gDoseSeg = LOW_SEG;
-CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :               gDoseSeg = LOW_SEG;
-CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :               gDoseSeg = HIG_SEG;
-CaptureSensorPluseCounter in Sensor.c (Hardware\Sensor) :         default: gDoseSeg = LOW_SEG;break;
+---- SYS_PRAM Matches (7 in 2 files) ----
+DataPro in CMD.c (Hardware\Cmd) : 				 if(length-i-5 > sizeof(SYS_PRAM))
+ACK_CMD_R in CMD.c (Hardware\Cmd) :     SYS_PRAM red;
+ACK_CMD_R in CMD.c (Hardware\Cmd) :     SendData('R',(uint8_t*)&red,sizeof(SYS_PRAM));
+ACK_CMD_W in CMD.c (Hardware\Cmd) :     SYS_PRAM wcm;
+ACK_CMD_W in CMD.c (Hardware\Cmd) :     memcpy(&wcm,cdata,sizeof(SYS_PRAM));
+{anonSYS_PRAM} in main.h (User) : }SYS_PRAM;
+{anonLP_PARAM} in main.h (User) : 	SYS_PRAM s_SysParam;

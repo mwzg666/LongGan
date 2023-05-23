@@ -5,20 +5,7 @@
 #include "system.h"
 
 
-
-#if 0
-#define USE_LOW_USV 8000		//8mSv
-#define USE_HIGH_USV 10000		//10mSv
-#endif
-//yao 切换临界切换值↓
-#define USE_LOW_USV    2000		//2mSv
-#define USE_HIGH_USV   1000		//1mSv
-//↑切换临界切换值
-#define LOW_SEG 0 //低量程段状态
-#define HIG_SEG 1 //高量程段状态
-static u8 gDoseSeg = LOW_SEG;//当前处在的段
-
-extern LP_SYSTEM_STTAE SysRunState;
+u8 GDoseSeg = LOW_SEG;//当前处在的段
 
 u32 Low_CPS = 0;
 u32 High_CPS = 0;
@@ -27,6 +14,7 @@ static float LowSmothCPS,HighSmothCPS;
 static float LowNOSmothCPS,HighNOSmothCPS;
 static float LowSumCPS,HighSumCPS;
 
+//β数据
 static float SmothCPS_B;
 static float NOSmothCPS_B;
 static float SumCPS_B;
@@ -50,6 +38,7 @@ void SensorMeasureBegin(void)
 	Low_CPS = 0;
 	High_CPS = 0;
 	GetCounter();
+    GetHightCounter();
 }
 
 
@@ -83,7 +72,7 @@ void CaptureSensorPluseCounter(void)
 	  	SysRunState.HChannelNoCountTime = 0;
 	}        
 
-    switch(gDoseSeg)
+    switch(GDoseSeg)
     {
         case LOW_SEG:
         {
@@ -98,8 +87,9 @@ void CaptureSensorPluseCounter(void)
                                 LowSumCPS, 
                                 SysRunState.s_DoseMSG.DoseRate,
                                 &SysRunState.s_DoseMSG.C1);
-
-            SmothCPS_B = CalcLow(SysRunState.stParam.s_SysParam.DiYaCanshuA, 
+            //β剂量率
+            SmothCPS_B = CalcLow(
+                                SysRunState.stParam.s_SysParam.DiYaCanshuA, 
                                 SysRunState.stParam.s_SysParam.DiYaCanshuB, 
                                 SysRunState.stParam.s_SysParam.DiYaCanshuC,
                                 LowSumCPS, 
@@ -120,7 +110,7 @@ void CaptureSensorPluseCounter(void)
 
             if(SysRunState.s_DoseMSG.DoseRate >= USE_LOW_USV)//
             {
-                gDoseSeg = HIG_SEG;
+                GDoseSeg = HIG_SEG;
                 //GM_HIGH;
                 ClearCounter();
             }
@@ -159,8 +149,8 @@ void CaptureSensorPluseCounter(void)
             
             if(SysRunState.s_DoseMSG.DoseRate < USE_HIGH_USV)
             {
-              gDoseSeg = LOW_SEG;
-              GM_LOW;
+              GDoseSeg = LOW_SEG;
+              //GM_LOW;
               ClearCounter();
             }
 
@@ -174,7 +164,7 @@ void CaptureSensorPluseCounter(void)
          }
         break; 
        
-        default: gDoseSeg = LOW_SEG;break;
+        default: GDoseSeg = LOW_SEG;break;
     }
 
 	LowNOSmothCPS = LowSumCPS;

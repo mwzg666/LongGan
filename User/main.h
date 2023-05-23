@@ -110,12 +110,16 @@ typedef struct
 
 	float PingHuaShiJian;//平滑时间
 
-	float DiYaCanshuA;//低量程通道校准因子A		LP
-	float DiYaCanshuB;// 低量程通道校准因子B 	LP
-	float DiYaCanshuC;// 低量程通道校准因子C 	LP
+	float DiYaCanshuA;  //低量程通道校准因子A	   	  LP
+	float DiYaCanshuB;  // 低量程通道校准因子B       	LP
+	float DiYaCanshuC;  // 低量程通道校准因子C 	        LP
 	float GaoYaCanshuA;//高量程通道校准因子A 	LP
 	float GaoYaCanshuB;// 高量程通道校准因子B 	LP
 	float GaoYaCanshuC;// 高量程通道校准因子C 	LP
+
+	//float BCanshuA;   //β校准因子A   	  LP
+	//float BCanshuB;   //β校准因子B 	  LP
+	//float BCanshuC;   //β校准因子C      LP
 
     
 }SYS_PRAM;

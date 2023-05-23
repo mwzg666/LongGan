@@ -195,44 +195,77 @@ float CounterPH()
 
 float GetHis(BYTE time)
 {
-    BYTE i,j;
+    BYTE i;
     float ret = 0.0;
-    if (Full)
+
+    if(GDoseSeg == LOW_SEG)
     {
-        for(j = 0;j<2;j++)
+        if (Full)
         {
             for (i=CT-time;i<CT;i++)
             {
-                ret += CpsArr[j][i];
+                ret += CpsArr[0][i];
             }
-        }
-        return (ret/time);
-    }
-    else
-    {
-        if (time > ArrCnt)
-        {
-            for(j = 0;j<2;j++)
-            {
-                for (i=0;i<ArrCnt;i++)
-                {
-                    ret += CpsArr[j][i];
-                }
-            }
-            return (ret/ArrCnt);
+
+            return (ret/time);
         }
         else
         {
-            for(j = 0;j<2;j++)
+            if (time > ArrCnt)
+            {
+                for (i=0;i<ArrCnt;i++)
+                {
+                    ret += CpsArr[0][i];
+                }
+
+                return (ret/ArrCnt);
+            }
+            else
             {
                 for (i=ArrCnt-time;i<ArrCnt;i++)
                 {
-                    ret += CpsArr[j][i];
+                    ret += CpsArr[0][i];
                 }
+
+                return (ret/time);
             }
-            return (ret/time);
         }
     }
+
+    if(GDoseSeg == HIG_SEG)
+    {
+        if (Full)
+        {
+            for (i=CT-time;i<CT;i++)
+            {
+                ret += CpsArr[1][i];
+            }
+
+            return (ret/time);
+        }
+        else
+        {
+            if (time > ArrCnt)
+            {
+                for (i=0;i<ArrCnt;i++)
+                {
+                    ret += CpsArr[1][i];
+                }
+
+                return (ret/ArrCnt);
+            }
+            else
+            {
+                for (i=ArrCnt-time;i<ArrCnt;i++)
+                {
+                    ret += CpsArr[1][i];
+                }
+
+                return (ret/time);
+            }
+        }
+    }
+
     //return 0.0;
 }
 
